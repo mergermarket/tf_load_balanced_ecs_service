@@ -32,4 +32,4 @@ This module creates an ECS service with resources neccessary to plug into an App
 
 ### Outputs
 
-* `target_group_arn` - the ARN of the target group for use by ALB listener rules (e.g. as a parameter to the (tf_alb_listener_rules module)[https://github.com/mergermarket/tf_alb_listener_rules]).
+* `target_group_arn` - the ARN of the target group for use by ALB listener rules (e.g. as a parameter to the [tf_alb_listener_rules module](https://github.com/mergermarket/tf_alb_listener_rules)).
