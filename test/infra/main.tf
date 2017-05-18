@@ -10,7 +10,39 @@ provider "aws" {
   region                      = "eu-west-1"
 }
 
+module "target_group" {
+  source = "../.."
+
+  name            = "test-service"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+}
+
 module "service" {
+  source = "../.."
+
+  name            = "test-service"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+}
+
+module "role" {
+  source = "../.."
+
+  name            = "test-service"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+}
+
+module "policy" {
+  source = "../.."
+
+  name            = "test-service"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+}
+
+module "all" {
   source = "../.."
 
   name            = "test-service"

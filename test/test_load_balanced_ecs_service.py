@@ -7,26 +7,29 @@ from subprocess import check_call, check_output
 
 cwd = os.getcwd()
 
+
+def _terraform_escape_value(value):
+    def escape(match):
+        return '\\n' if match.group(0) == '\n' else '\\"'
+    return re.sub(r'([\n"])', escape, value)
+
 class TestCreateTaskdef(unittest.TestCase):
 
     def setUp(self):
         check_call([ 'terraform', 'get', 'test/infra' ])
 
     
-    def test_create_taskdef(self):
-        # ms since epoch
-        name = 'test-' + str(int(time.time() * 1000))
-
+    def test_create_target_group(self):
         output = check_output([
             'terraform',
             'plan',
-            '-var', 'name={}'.format(name),
             '-no-color',
+            '-target=module.target_group',
             'test/infra'
         ]).decode('utf-8')
 
         assert dedent("""
-            + module.service.aws_alb_target_group.target_group
+            + module.target_group.aws_alb_target_group.target_group
                 arn:                                "<computed>"
                 arn_suffix:                         "<computed>"
                 deregistration_delay:               "10"
@@ -44,7 +47,16 @@ class TestCreateTaskdef(unittest.TestCase):
                 protocol:                           "HTTP"
                 stickiness.#:                       "<computed>"
                 vpc_id:                             "test-vpc"
-        """).strip() in output, output
+        """).strip() in output
+
+    def test_create_ecs_service(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.service',
+            'test/infra'
+        ]).decode('utf-8')
 
         assert dedent("""
             + module.service.aws_ecs_service.service
@@ -67,25 +79,90 @@ class TestCreateTaskdef(unittest.TestCase):
                 task_definition:                            "test-taskdef"
         """).strip() in output
 
-        assert dedent("""
-            + module.service.aws_iam_role.role
+
+    def test_create_role(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.role',
+            'test/infra'
+        ]).decode('utf-8')
+
+        expected_assume_role_policy_doc = dedent("""
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Action": "sts:AssumeRole",
+                  "Principal": { "Service": "ecs.amazonaws.com" },
+                  "Effect": "Allow"
+                }
+              ]
+            }
+        """).strip() + "\n"
+
+        expected_role_plan = dedent("""
+            + module.role.aws_iam_role.role
                 arn:                "<computed>"
-                assume_role_policy: "{\\n  \\"Version\\": \\"2012-10-17\\",\\n  \\"Statement\\": [\\n    {\\n      \\"Action\\": \\"sts:AssumeRole\\",\\n      \\"Principal\\": { \\"Service\\": \\"ecs.amazonaws.com\\" },\\n      \\"Effect\\": \\"Allow\\"\\n    }\\n  ]\\n}\\n"
+                assume_role_policy: "{assume_role_policy}"
                 create_date:        "<computed>"
                 name:               "<computed>"
                 name_prefix:        "test-service-service-role"
                 path:               "/"
                 unique_id:          "<computed>"
-        """).strip() in output
+        """).strip().format(assume_role_policy=_terraform_escape_value(
+            expected_assume_role_policy_doc
+        ))
+        assert expected_role_plan in output
+
+    def test_create_policy(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.policy',
+            'test/infra'
+        ]).decode('utf-8')
+
+        expected_service_policy_doc = dedent("""
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:AuthorizeSecurityGroupIngress",
+                    "ec2:Describe*",
+                    "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                    "elasticloadbalancing:DeregisterTargets",
+                    "elasticloadbalancing:Describe*",
+                    "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                    "elasticloadbalancing:RegisterTargets"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+        """).strip() + "\n"
 
         assert dedent("""
-            + module.service.aws_iam_role_policy.policy
+            + module.policy.aws_iam_role_policy.policy
                 name:        "<computed>"
                 name_prefix: "test-service-service-policy"
-                policy:      "{\\n  \\"Version\\": \\"2012-10-17\\",\\n  \\"Statement\\": [\\n    {\\n      \\"Effect\\": \\"Allow\\",\\n      \\"Action\\": [\\n        \\"ec2:AuthorizeSecurityGroupIngress\\",\\n        \\"ec2:Describe*\\",\\n        \\"elasticloadbalancing:DeregisterInstancesFromLoadBalancer\\",\\n        \\"elasticloadbalancing:DeregisterTargets\\",\\n        \\"elasticloadbalancing:Describe*\\",\\n        \\"elasticloadbalancing:RegisterInstancesWithLoadBalancer\\",\\n        \\"elasticloadbalancing:RegisterTargets\\"\\n      ],\\n      \\"Resource\\": \\"*\\"\\n    }\\n  ]\\n}\\n"
-                role:        "${aws_iam_role.role.id}"
-        """).strip() in output
+                policy:      "{service_policy_doc}"
+                role:        "${{aws_iam_role.role.id}}"
+        """).strip().format(service_policy_doc=_terraform_escape_value(
+            expected_service_policy_doc
+        )) in output, output
 
-        assert dedent("""
-            Plan: 4 to add, 0 to change, 0 to destroy.
-        """).strip() in output
+    def test_correct_number_of_resources(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.all',
+            'test/infra'
+        ]).decode('utf-8')
+
+        assert "Plan: 4 to add, 0 to change, 0 to destroy." in output, output
