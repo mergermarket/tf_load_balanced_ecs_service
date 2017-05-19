@@ -154,7 +154,7 @@ class TestCreateTaskdef(unittest.TestCase):
                 role:        "${{aws_iam_role.role.id}}"
         """).strip().format(service_policy_doc=_terraform_escape_value(
             expected_service_policy_doc
-        )) in output, output
+        )) in output
 
     def test_correct_number_of_resources(self):
         output = check_output([
@@ -165,4 +165,4 @@ class TestCreateTaskdef(unittest.TestCase):
             'test/infra'
         ]).decode('utf-8')
 
-        assert "Plan: 4 to add, 0 to change, 0 to destroy." in output, output
+        assert "Plan: 4 to add, 0 to change, 0 to destroy." in output
