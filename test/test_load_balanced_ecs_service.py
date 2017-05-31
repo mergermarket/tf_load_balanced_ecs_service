@@ -18,7 +18,7 @@ class TestCreateTaskdef(unittest.TestCase):
     def setUp(self):
         check_call([ 'terraform', 'get', 'test/infra' ])
 
-    
+
     def test_create_target_group(self):
         output = check_output([
             'terraform',
@@ -108,7 +108,7 @@ class TestCreateTaskdef(unittest.TestCase):
                 assume_role_policy: "{assume_role_policy}"
                 create_date:        "<computed>"
                 name:               "<computed>"
-                name_prefix:        "test-service-service-role"
+                name_prefix:        "test-service"
                 path:               "/"
                 unique_id:          "<computed>"
         """).strip().format(assume_role_policy=_terraform_escape_value(
@@ -149,7 +149,7 @@ class TestCreateTaskdef(unittest.TestCase):
         assert dedent("""
             + module.policy.aws_iam_role_policy.policy
                 name:        "<computed>"
-                name_prefix: "test-service-service-policy"
+                name_prefix: "test-service"
                 policy:      "{service_policy_doc}"
                 role:        "${{aws_iam_role.role.id}}"
         """).strip().format(service_policy_doc=_terraform_escape_value(
