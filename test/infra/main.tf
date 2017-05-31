@@ -26,6 +26,14 @@ module "service" {
   task_definition = "test-taskdef"
 }
 
+module "service_with_long_name" {
+  source = "../.."
+
+  name            = "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+}
+
 module "role" {
   source = "../.."
 

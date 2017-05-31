@@ -23,7 +23,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_alb_target_group" "target_group" {
-  name                 = "${var.name}"
+  name = "${join("", slice(split("", var.name), 0, length(var.name) > 31 ? 31 : length(var.name)))}"
 
   # port will be set dynamically, but for some reason AWS requires a value
   port                 = "31337"
