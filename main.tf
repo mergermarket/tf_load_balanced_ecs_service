@@ -40,3 +40,11 @@ resource "aws_alb_target_group" "target_group" {
     matcher             = "${var.health_check_matcher}"
   }
 }
+
+resource "null_resource" "ecs_service_and_target_group" {
+  triggers {
+    ecs_service_arn = "${aws_ecs_service.service.id}"
+    target_group_arn = "${aws_alb_target_group.target_group.arn}"
+  }
+  depends_on [ "aws_ecs_service.service", "aws_alb_target_group.target_group" ]
+}
