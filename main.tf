@@ -21,7 +21,7 @@ resource "aws_ecs_service" "service" {
     field = "instanceId"
   }
 
-  depends_on = ["${null_resource.alb_listener_arn}"]
+  depends_on = ["null_resource.alb_listener_arn"]
 }
 
 resource "null_resource" "alb_listener_arn" {
