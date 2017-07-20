@@ -82,3 +82,8 @@ variable "health_check_matcher" {
   type        = "string"
   default     = "200-299"
 }
+
+variable "alb_listener_arn" {
+  description = "We need this to be available before the service can be created"
+  default     = ""
+}

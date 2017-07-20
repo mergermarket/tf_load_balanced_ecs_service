@@ -20,6 +20,14 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
     field = "instanceId"
   }
+
+  depends_on = ["null_resource.alb_listener_arn"]
+}
+
+resource "null_resource" "alb_listener_arn" {
+  triggers {
+    alb_listener_arn = "${var.alb_listener_arn}"
+  }
 }
 
 resource "aws_alb_target_group" "target_group" {
