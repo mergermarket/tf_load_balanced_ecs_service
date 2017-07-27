@@ -240,4 +240,4 @@ class TestCreateTaskdef(unittest.TestCase):
             'test/infra'
         ]).decode('utf-8')
 
-        assert "Plan: 4 to add, 0 to change, 0 to destroy." in output
+        assert "Plan: 5 to add, 0 to change, 0 to destroy." in output
