@@ -21,6 +21,10 @@ resource "aws_ecs_service" "service" {
     field = "instanceId"
   }
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   depends_on = ["null_resource.alb_listener_arn"]
 }
 
