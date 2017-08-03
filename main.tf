@@ -47,4 +47,8 @@ resource "aws_alb_target_group" "target_group" {
     unhealthy_threshold = "${var.health_check_unhealthy_threshold}"
     matcher             = "${var.health_check_matcher}"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
