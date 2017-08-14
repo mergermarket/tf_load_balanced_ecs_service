@@ -25,12 +25,18 @@ resource "aws_ecs_service" "service" {
     create_before_destroy = true
   }
 
-  depends_on = ["null_resource.alb_listener_arn"]
+  depends_on = ["null_resource.alb_listener_arn", "null_resource.alb_arn"]
 }
 
 resource "null_resource" "alb_listener_arn" {
   triggers {
     alb_listener_arn = "${var.alb_listener_arn}"
+  }
+}
+
+resource "null_resource" "alb_arn" {
+  triggers {
+    alb_name = "${var.alb_arn}"
   }
 }
 

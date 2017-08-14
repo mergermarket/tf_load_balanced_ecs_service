@@ -87,3 +87,8 @@ variable "alb_listener_arn" {
   description = "We need this to be available before the service can be created"
   default     = ""
 }
+
+variable "alb_arn" {
+  description = "The ARN of the ALB (used to ensure the ALB exists before the target group is associated with the service, since otherwise it fails)."
+  default     = ""
+}
