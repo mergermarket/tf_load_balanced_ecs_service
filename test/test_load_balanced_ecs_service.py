@@ -183,7 +183,7 @@ class TestCreateTaskdef(unittest.TestCase):
                 health_check.0.protocol:            "HTTP"
                 health_check.0.timeout:             "4"
                 health_check.0.unhealthy_threshold: "2"
-                name:                               "test-service-humptydumptysatona"
+                name:                               "test-service-humptydumptysatonaw"
         """).strip() # noqa
 
         assert expected_role_plan in output

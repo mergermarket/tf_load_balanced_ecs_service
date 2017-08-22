@@ -41,7 +41,7 @@ resource "null_resource" "alb_arn" {
 }
 
 resource "aws_alb_target_group" "target_group" {
-  name = "${join("", slice(split("", var.name), 0, length(var.name) > 31 ? 31 : length(var.name)))}"
+  name = "${replace(replace(var.name, "/(.{0,32}).*/", "$1"), "/^-+|-+$/", "")}"
 
   # port will be set dynamically, but for some reason AWS requires a value
   port                 = "31337"
