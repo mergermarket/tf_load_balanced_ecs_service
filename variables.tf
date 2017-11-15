@@ -15,6 +15,11 @@ variable "task_definition" {
   type        = "string"
 }
 
+variable "target_group_arn" {
+  description = "The target group ARN"
+  type        = "string"
+}
+
 # Optional parameters
 
 variable "cluster" {
