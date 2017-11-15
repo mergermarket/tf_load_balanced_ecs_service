@@ -5,11 +5,6 @@ variable "name" {
   type        = "string"
 }
 
-variable "vpc_id" {
-  description = "The identifier of the VPC in which to create the target group."
-  type        = "string"
-}
-
 variable "task_definition" {
   description = "The family and revision (family:revision) or full ARN of the task definition that you want to run in your service."
   type        = "string"
@@ -86,14 +81,4 @@ variable "health_check_matcher" {
   description = "The HTTP codes to use when checking for a successful response from a target. You can specify multiple values (for example, \"200,202\") or a range of values (for example, \"200-299\")."
   type        = "string"
   default     = "200-299"
-}
-
-variable "alb_listener_arn" {
-  description = "We need this to be available before the service can be created"
-  default     = ""
-}
-
-variable "alb_arn" {
-  description = "The ARN of the ALB (used to ensure the ALB exists before the target group is associated with the service, since otherwise it fails)."
-  default     = ""
 }
