@@ -82,3 +82,13 @@ variable "health_check_matcher" {
   type        = "string"
   default     = "200-299"
 }
+
+variable "deployment_minimum_healthy_percent" {
+  description = "The minimumHealthyPercent represents a lower limit on the number of your service's tasks that must remain in the RUNNING state during a deployment, as a percentage of the desiredCount (rounded up to the nearest integer)."
+  default     = "100"
+}
+
+variable "deployment_maximum_percent" {
+  description = "The maximumPercent parameter represents an upper limit on the number of your service's tasks that are allowed in the RUNNING or PENDING state during a deployment, as a percentage of the desiredCount (rounded down to the nearest integer)."
+  default     = "200"
+}

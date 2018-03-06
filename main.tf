@@ -1,9 +1,11 @@
 resource "aws_ecs_service" "service" {
-  name            = "${var.name}"
-  cluster         = "${var.cluster}"
-  task_definition = "${var.task_definition}"
-  desired_count   = "${var.desired_count}"
-  iam_role        = "${aws_iam_role.role.arn}"
+  name                               = "${var.name}"
+  cluster                            = "${var.cluster}"
+  task_definition                    = "${var.task_definition}"
+  desired_count                      = "${var.desired_count}"
+  iam_role                           = "${aws_iam_role.role.arn}"
+  deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
+  deployment_maximum_percent         = "${var.deployment_maximum_percent}"
 
   load_balancer {
     target_group_arn = "${var.target_group_arn}"
