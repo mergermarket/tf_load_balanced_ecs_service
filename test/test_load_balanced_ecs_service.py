@@ -182,6 +182,22 @@ class TestCreateTaskdef(unittest.TestCase):
             expected_service_policy_doc
         )) in output
 
+    def test_min_and_max_perecent(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.service_with_custom_min_and_max_perecent',
+            'test/infra'
+        ]).decode('utf-8')
+
+        assert dedent("""
+           + module.service_with_custom_min_and_max_perecent.aws_ecs_service.service
+               cluster:                                 "default"
+               deployment_maximum_percent:              "100"
+               deployment_minimum_healthy_percent:      "0"
+        """).strip() in output
+
     def test_correct_number_of_resources(self):
         output = check_output([
             'terraform',
