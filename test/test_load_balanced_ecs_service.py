@@ -208,3 +208,14 @@ class TestCreateTaskdef(unittest.TestCase):
         ]).decode('utf-8')
 
         assert "Plan: 3 to add, 0 to change, 0 to destroy." in output
+
+    def test_no_target_group(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.no_target_group',
+            'test/infra'
+        ]).decode('utf-8')
+
+        assert "load_balancer" not in output

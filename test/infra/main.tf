@@ -67,3 +67,10 @@ module "service_with_custom_min_and_max_perecent" {
   deployment_minimum_healthy_percent = "0"
   deployment_maximum_percent         = "100"
 }
+
+module "no_target_group" {
+  source = "../.."
+
+  name            = "test-service"
+  task_definition = "test-taskdef"
+}

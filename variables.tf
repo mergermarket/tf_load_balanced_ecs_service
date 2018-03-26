@@ -13,9 +13,8 @@ variable "task_definition" {
 variable "target_group_arn" {
   description = "The target group ARN"
   type        = "string"
+  default     = ""
 }
-
-# Optional parameters
 
 variable "cluster" {
   description = "The name of the ECS cluster to deploy the service to."
