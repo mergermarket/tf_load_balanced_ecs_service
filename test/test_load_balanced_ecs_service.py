@@ -28,25 +28,27 @@ class TestCreateTaskdef(unittest.TestCase):
         ]).decode('utf-8')
 
         assert dedent("""
- + module.service.aws_ecs_service.service
-     cluster:                                 "default"
-     deployment_maximum_percent:              "200"
-     deployment_minimum_healthy_percent:      "100"
-     desired_count:                           "3"
-     iam_role:                                "${aws_iam_role.role.arn}"
-     load_balancer.#:                         "1"
-     load_balancer.53344424.container_name:   "app"
-     load_balancer.53344424.container_port:   "8000"
-     load_balancer.53344424.elb_name:         ""
-     load_balancer.53344424.target_group_arn: "some-target-group-arn"
-     name:                                    "test-service"
-     placement_strategy.#:                    "2"
-     placement_strategy.2093792364.field:     "attribute:ecs.availability-zone"
-     placement_strategy.2093792364.type:      "spread"
-     placement_strategy.3946258308.field:     "instanceId"
-     placement_strategy.3946258308.type:      "spread"
-     task_definition:                         "test-taskdef"
-        """).strip() in output
++ module.service.aws_ecs_service.service
+      id:                                      <computed>
+      cluster:                                 "default"
+      deployment_maximum_percent:              "200"
+      deployment_minimum_healthy_percent:      "100"
+      desired_count:                           "3"
+      iam_role:                                "${aws_iam_role.role.arn}"
+      launch_type:                             "EC2"
+      load_balancer.#:                         "1"
+      load_balancer.53344424.container_name:   "app"
+      load_balancer.53344424.container_port:   "8000"
+      load_balancer.53344424.elb_name:         ""
+      load_balancer.53344424.target_group_arn: "some-target-group-arn"
+      name:                                    "test-service"
+      placement_strategy.#:                    "2"
+      placement_strategy.2750134989.field:     "instanceId"
+      placement_strategy.2750134989.type:      "spread"
+      placement_strategy.3619322362.field:     "attribute:ecs.availability-zone"
+      placement_strategy.3619322362.type:      "spread"
+      task_definition:                         "test-taskdef"
+        """).replace(" ", "") in output.replace(" ", "")
 
     def test_create_role(self):
         output = check_output([
@@ -71,18 +73,22 @@ class TestCreateTaskdef(unittest.TestCase):
         """).strip() + "\n"
 
         expected_role_plan = dedent("""
-            + module.role.aws_iam_role.role
-                arn:                "<computed>"
-                assume_role_policy: "{assume_role_policy}"
-                create_date:        "<computed>"
-                name:               "<computed>"
-                name_prefix:        "test-service"
-                path:               "/"
-                unique_id:          "<computed>"
-        """).strip().format(assume_role_policy=_terraform_escape_value(
-            expected_assume_role_policy_doc
-        ))
-        assert expected_role_plan in output
+          + module.role.aws_iam_role.role
+              id:                                      <computed>
+              arn:                                     <computed>
+              assume_role_policy:                      "{assume_role_policy}"
+              create_date:                             <computed>
+              force_detach_policies:                   "false"
+              name:                                    <computed>
+              name_prefix:                             "test-service"
+              path:                                    "/"
+              unique_id:                               <computed>
+        """).strip().format(
+                assume_role_policy=_terraform_escape_value(
+                    expected_assume_role_policy_doc
+                )
+            )
+        assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
 
     def test_create_service_with_long_name(self):
         output = check_output([
@@ -107,40 +113,45 @@ class TestCreateTaskdef(unittest.TestCase):
         """).strip() + "\n"
 
         expected_role_plan = dedent("""
-            + module.service_with_long_name.aws_iam_role.role
-                arn:                "<computed>"
-                assume_role_policy: "{assume_role_policy}"
-                create_date:        "<computed>"
-                name:               "<computed>"
-                name_prefix:        "test-service-humptydumptysatona"
-                path:               "/"
-                unique_id:          "<computed>"
+          + module.service_with_long_name.aws_iam_role.role
+              id:                                      <computed>
+              arn:                                     <computed>
+              assume_role_policy:                      "{assume_role_policy}"
+              create_date:                             <computed>
+              force_detach_policies:                   "false"
+              name:                                    <computed>
+              name_prefix:                             "test-service-humptydumptysatona"
+              path:                                    "/"
+              unique_id:                               <computed>
         """).strip().format(assume_role_policy=_terraform_escape_value(
             expected_assume_role_policy_doc
         ))
         expected_role_policy_plan = dedent("""
-            + module.service_with_long_name.aws_iam_role_policy.policy
-                name:        "<computed>"
-                name_prefix: "test-service-humptydumptysatona"
+          + module.service_with_long_name.aws_iam_role_policy.policy
+              id:                                      <computed>
+              name:                                    <computed>
+              name_prefix:                             "test-service-humptydumptysatona"
         """).strip()
         expected_aws_ecs_service_plan = dedent("""
             + module.service_with_long_name.aws_ecs_service.service
-                cluster:                                 "default"
-                deployment_maximum_percent:              "200"
-                deployment_minimum_healthy_percent:      "100"
-                desired_count:                           "3"
-                iam_role:                                "${aws_iam_role.role.arn}"
-                load_balancer.#:                         "1"
-                load_balancer.53344424.container_name:   "app"
-                load_balancer.53344424.container_port:   "8000"
-                load_balancer.53344424.elb_name:         ""
-                load_balancer.53344424.target_group_arn: "some-target-group-arn"
-                name:                                    "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
+                  id:                                      <computed>
+                  cluster:                                 "default"
+                  deployment_maximum_percent:              "200"
+                  deployment_minimum_healthy_percent:      "100"
+                  desired_count:                           "3"
+                  iam_role:                                "${aws_iam_role.role.arn}"
+                  launch_type:                             "EC2"
+                  load_balancer.#:                         "1"
+                  load_balancer.53344424.container_name:   "app"
+                  load_balancer.53344424.container_port:   "8000"
+                  load_balancer.53344424.elb_name:         ""
+                  load_balancer.53344424.target_group_arn: "some-target-group-arn"
+                  name:                                    "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
         """).strip() # noqa
 
-        assert expected_role_plan in output
-        assert expected_role_policy_plan in output
-        assert expected_aws_ecs_service_plan in output
+        assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
+        assert expected_role_policy_plan.replace(" ", "") in output.replace(" ", "")
+        assert expected_aws_ecs_service_plan.replace(" ", "") in output.replace(" ", "")
 
     def test_create_policy(self):
         output = check_output([
@@ -172,15 +183,16 @@ class TestCreateTaskdef(unittest.TestCase):
             }
         """).strip() + "\n"
 
-        assert dedent("""
-            + module.policy.aws_iam_role_policy.policy
-                name:        "<computed>"
-                name_prefix: "test-service"
-                policy:      "{service_policy_doc}"
-                role:        "${{aws_iam_role.role.id}}"
+        expected_policy = dedent("""
+  + module.policy.aws_iam_role_policy.policy
+      id:                                      <computed>
+      name:                                    <computed>
+      name_prefix:                             "test-service"
+      policy:                                  "{service_policy_doc}"
         """).strip().format(service_policy_doc=_terraform_escape_value(
             expected_service_policy_doc
-        )) in output
+        ))
+        assert expected_policy.replace(" ", "") in output.replace(" ", "")
 
     def test_min_and_max_perecent(self):
         output = check_output([
@@ -191,12 +203,14 @@ class TestCreateTaskdef(unittest.TestCase):
             'test/infra'
         ]).decode('utf-8')
 
-        assert dedent("""
+        expected_plan = dedent("""
            + module.service_with_custom_min_and_max_perecent.aws_ecs_service.service
+               id:                                      <computed>
                cluster:                                 "default"
                deployment_maximum_percent:              "100"
                deployment_minimum_healthy_percent:      "0"
-        """).strip() in output
+        """).strip()
+        assert expected_plan.replace(" ", "") in output.replace(" ", "")
 
     def test_correct_number_of_resources(self):
         output = check_output([
