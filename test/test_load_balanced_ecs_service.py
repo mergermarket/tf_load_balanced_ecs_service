@@ -17,6 +17,7 @@ class TestCreateTaskdef(unittest.TestCase):
 
     def setUp(self):
         check_call(['terraform', 'get', 'test/infra'])
+        check_call(['terraform', 'init', 'test/infra'])
 
     def test_create_ecs_service(self):
         output = check_output([
@@ -27,13 +28,14 @@ class TestCreateTaskdef(unittest.TestCase):
             'test/infra'
         ]).decode('utf-8')
 
-        assert dedent("""
+        expected_service = dedent("""
 + module.service.aws_ecs_service.service
       id:                                      <computed>
       cluster:                                 "default"
       deployment_maximum_percent:              "200"
       deployment_minimum_healthy_percent:      "100"
       desired_count:                           "3"
+      enable_ecs_managed_tags:                 "false"
       iam_role:                                "${aws_iam_role.role.arn}"
       launch_type:                             "EC2"
       load_balancer.#:                         "1"
@@ -42,13 +44,16 @@ class TestCreateTaskdef(unittest.TestCase):
       load_balancer.53344424.elb_name:         ""
       load_balancer.53344424.target_group_arn: "some-target-group-arn"
       name:                                    "test-service"
-      placement_strategy.#:                    "2"
-      placement_strategy.2750134989.field:     "instanceId"
-      placement_strategy.2750134989.type:      "spread"
-      placement_strategy.3619322362.field:     "attribute:ecs.availability-zone"
-      placement_strategy.3619322362.type:      "spread"
+      ordered_placement_strategy.#:            "2"
+      ordered_placement_strategy.0.field:      "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:       "spread"
+      ordered_placement_strategy.1.field:      "instanceId"
+      ordered_placement_strategy.1.type:       "spread"
+      scheduling_strategy:                     "REPLICA"
       task_definition:                         "test-taskdef"
-        """).replace(" ", "") in output.replace(" ", "")
+        """)
+
+        assert expected_service.replace(" ", "") in output.replace(" ", "")
 
     def test_create_role(self):
         output = check_output([
@@ -73,16 +78,17 @@ class TestCreateTaskdef(unittest.TestCase):
         """).strip() + "\n"
 
         expected_role_plan = dedent("""
-          + module.role.aws_iam_role.role
-              id:                                      <computed>
-              arn:                                     <computed>
-              assume_role_policy:                      "{assume_role_policy}"
-              create_date:                             <computed>
-              force_detach_policies:                   "false"
-              name:                                    <computed>
-              name_prefix:                             "test-service"
-              path:                                    "/"
-              unique_id:                               <computed>
+            + module.role.aws_iam_role.role
+                id:                                      <computed>
+                arn:                                     <computed>
+                assume_role_policy:                      "{assume_role_policy}"
+                create_date:                             <computed>
+                force_detach_policies:                   "false"
+                max_session_duration:                    "3600"
+                name:                                    <computed>
+                name_prefix:                             "test-service"
+                path:                                    "/"
+                unique_id:                               <computed>
         """).strip().format(
                 assume_role_policy=_terraform_escape_value(
                     expected_assume_role_policy_doc
@@ -119,6 +125,7 @@ class TestCreateTaskdef(unittest.TestCase):
               assume_role_policy:                      "{assume_role_policy}"
               create_date:                             <computed>
               force_detach_policies:                   "false"
+              max_session_duration:                    "3600"
               name:                                    <computed>
               name_prefix:                             "test-service-humptydumptysatona"
               path:                                    "/"
@@ -139,6 +146,7 @@ class TestCreateTaskdef(unittest.TestCase):
                   deployment_maximum_percent:              "200"
                   deployment_minimum_healthy_percent:      "100"
                   desired_count:                           "3"
+                  enable_ecs_managed_tags:                 "false"
                   iam_role:                                "${aws_iam_role.role.arn}"
                   launch_type:                             "EC2"
                   load_balancer.#:                         "1"
@@ -147,6 +155,13 @@ class TestCreateTaskdef(unittest.TestCase):
                   load_balancer.53344424.elb_name:         ""
                   load_balancer.53344424.target_group_arn: "some-target-group-arn"
                   name:                                    "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
+                  ordered_placement_strategy.#:            "2"
+                  ordered_placement_strategy.0.field:      "attribute:ecs.availability-zone"
+                  ordered_placement_strategy.0.type:       "spread"
+                  ordered_placement_strategy.1.field:      "instanceId"
+                  ordered_placement_strategy.1.type:       "spread"
+                  scheduling_strategy:                     "REPLICA"
+                  task_definition:                         "test-taskdef"
         """).strip() # noqa
 
         assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
