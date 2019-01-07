@@ -25,7 +25,9 @@ resource "aws_ecs_service" "service" {
     field = "instanceId"
   }
   
-  create_before_destroy = true
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_ecs_service" "service_no_loadbalancer" {
