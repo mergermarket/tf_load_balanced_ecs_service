@@ -24,6 +24,8 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
     field = "instanceId"
   }
+  
+  create_before_destroy = true
 }
 
 resource "aws_ecs_service" "service_no_loadbalancer" {
