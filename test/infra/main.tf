@@ -13,48 +13,48 @@ provider "aws" {
 module "target_group" {
   source = "../.."
 
-  name            = "test-service"
-  task_definition = "test-taskdef"
+  name             = "test-service"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 
 module "service" {
   source = "../.."
 
-  name            = "test-service"
-  task_definition = "test-taskdef"
+  name             = "test-service"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 
 module "service_with_long_name" {
   source = "../.."
 
-  name            = "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
-  task_definition = "test-taskdef"
+  name             = "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 
 module "role" {
   source = "../.."
 
-  name            = "test-service"
-  task_definition = "test-taskdef"
+  name             = "test-service"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 
 module "policy" {
   source = "../.."
 
-  name            = "test-service"
-  task_definition = "test-taskdef"
+  name             = "test-service"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 
 module "all" {
   source = "../.."
 
-  name            = "test-service"
-  task_definition = "test-taskdef"
+  name             = "test-service"
+  task_definition  = "test-taskdef"
   target_group_arn = "some-target-group-arn"
 }
 

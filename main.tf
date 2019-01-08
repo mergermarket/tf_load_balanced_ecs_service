@@ -24,9 +24,9 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
     field = "instanceId"
   }
-  
+
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = "${var.create_before_destroy_flag}"
   }
 }
 
