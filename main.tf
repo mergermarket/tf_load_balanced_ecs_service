@@ -26,7 +26,7 @@ resource "aws_ecs_service" "service" {
   }
   
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
