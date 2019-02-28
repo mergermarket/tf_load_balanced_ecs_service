@@ -16,7 +16,7 @@ def _terraform_escape_value(value):
 class TestCreateTaskdef(unittest.TestCase):
 
     def setUp(self):
-        check_call([ 'terraform', 'get', 'test/infra' ])
+        check_call([ 'terraform', 'init', 'test/infra' ])
 
 
     def test_create_target_group(self):
