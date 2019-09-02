@@ -35,6 +35,7 @@ class TestCreateTaskdef(unittest.TestCase):
                   arn_suffix:                                 <computed>
                   deregistration_delay:                       "10"
                   health_check.#:                             "1"
+                  health_check.0.enabled:                     "true"
                   health_check.0.healthy_threshold:           "2"
                   health_check.0.interval:                    "5"
                   health_check.0.matcher:                     "200-299"
@@ -43,6 +44,7 @@ class TestCreateTaskdef(unittest.TestCase):
                   health_check.0.protocol:                    "HTTP"
                   health_check.0.timeout:                     "4"
                   health_check.0.unhealthy_threshold:         "2"
+                  lambda_multi_value_headers_enabled:         "false"
                   name:                                       "test-service"
                   port:                                       "31337"
                   protocol:                                   "HTTP"
@@ -61,6 +63,7 @@ class TestCreateTaskdef(unittest.TestCase):
             '-target=module.service',
             'test/infra'
         ]).decode('utf-8')
+
         assert dedent("""
             + module.service.aws_ecs_service.service
                   id:                                         <computed>
@@ -82,11 +85,11 @@ class TestCreateTaskdef(unittest.TestCase):
                   ordered_placement_strategy.0.type:          "spread"
                   ordered_placement_strategy.1.field:         "instanceId"
                   ordered_placement_strategy.1.type:          "spread"
+                  placement_strategy.#:                       <computed>
                   platform_version:                           <computed>
                   scheduling_strategy:                        "REPLICA"
                   task_definition:                            "test-taskdef"
         """).strip() in output
-
 
 
     def test_create_role(self):
@@ -199,6 +202,7 @@ class TestCreateTaskdef(unittest.TestCase):
                   arn_suffix:                                 <computed>
                   deregistration_delay:                       "10"
                   health_check.#:                             "1"
+                  health_check.0.enabled:                     "true"
                   health_check.0.healthy_threshold:           "2"
                   health_check.0.interval:                    "5"
                   health_check.0.matcher:                     "200-299"
@@ -207,6 +211,7 @@ class TestCreateTaskdef(unittest.TestCase):
                   health_check.0.protocol:                    "HTTP"
                   health_check.0.timeout:                     "4"
                   health_check.0.unhealthy_threshold:         "2"
+                  lambda_multi_value_headers_enabled:         "false"
                   name:                                       "test-service-humptydumptysatonaw"
         """).strip() in output
 
