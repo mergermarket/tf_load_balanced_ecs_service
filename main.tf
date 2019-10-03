@@ -11,14 +11,18 @@ resource "aws_ecs_service" "service" {
     container_port   = "${var.container_port}"
   }
 
-  placement_strategy {
+  ordered_placement_strategy {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
 
-  placement_strategy {
+  ordered_placement_strategy {
     type  = "spread"
     field = "instanceId"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   depends_on = ["null_resource.alb_listener_arn", "null_resource.alb_arn"]
