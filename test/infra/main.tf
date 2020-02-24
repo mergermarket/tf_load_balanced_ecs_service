@@ -34,6 +34,19 @@ module "service_with_long_name" {
   task_definition = "test-taskdef"
 }
 
+module "service_with_tags" {
+  source = "../.."
+
+  name            = "test-service-with-tags"
+  vpc_id          = "test-vpc"
+  task_definition = "test-taskdef"
+
+  tags = {
+    "name1" = "value1"
+    "name2" = "value2"
+  }
+}
+
 module "role" {
   source = "../.."
 

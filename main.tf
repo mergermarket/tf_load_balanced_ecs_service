@@ -4,6 +4,7 @@ resource "aws_ecs_service" "service" {
   task_definition = "${var.task_definition}"
   desired_count   = "${var.desired_count}"
   iam_role        = "${aws_iam_role.role.arn}"
+  tags            = "${var.tags}"
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.target_group.arn}"
@@ -11,12 +12,12 @@ resource "aws_ecs_service" "service" {
     container_port   = "${var.container_port}"
   }
 
-  placement_strategy {
+  ordered_placement_strategy {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
 
-  placement_strategy {
+  ordered_placement_strategy {
     type  = "spread"
     field = "instanceId"
   }

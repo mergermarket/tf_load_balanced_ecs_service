@@ -92,3 +92,10 @@ variable "alb_arn" {
   description = "The ARN of the ALB (used to ensure the ALB exists before the target group is associated with the service, since otherwise it fails)."
   default     = ""
 }
+
+variable "tags" {
+  description = "Tags added to the ecs service resource"
+  type = "map"
+  default = {
+  }
+}
