@@ -91,3 +91,10 @@ variable "deployment_maximum_percent" {
   description = "The maximumPercent parameter represents an upper limit on the number of your service's tasks that are allowed in the RUNNING or PENDING state during a deployment, as a percentage of the desiredCount (rounded down to the nearest integer)."
   default     = "200"
 }
+
+variable "tags" {
+  description = "Tags added to the ecs service resource"
+  type = "map"
+  default = {
+  }
+}

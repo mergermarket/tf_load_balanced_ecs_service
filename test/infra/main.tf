@@ -15,7 +15,7 @@ module "target_group" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "service" {
@@ -23,7 +23,7 @@ module "service" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "service_with_long_name" {
@@ -31,7 +31,7 @@ module "service_with_long_name" {
 
   name            = "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "role" {
@@ -39,7 +39,7 @@ module "role" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "policy" {
@@ -47,7 +47,7 @@ module "policy" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "all" {
@@ -55,7 +55,7 @@ module "all" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
-  target_group_arn = "some-target-group-arn"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
 }
 
 module "service_with_custom_min_and_max_perecent" {
@@ -63,7 +63,7 @@ module "service_with_custom_min_and_max_perecent" {
 
   name                               = "test-service"
   task_definition                    = "test-taskdef"
-  target_group_arn                   = "some-target-group-arn"
+  target_group_arn                   = "arn:aws-partition:service:eu-west-1:aws:resource"
   deployment_minimum_healthy_percent = "0"
   deployment_maximum_percent         = "100"
 }
@@ -73,4 +73,17 @@ module "no_target_group" {
 
   name            = "test-service"
   task_definition = "test-taskdef"
+}
+
+module "service_with_tags" {
+  source = "../.."
+
+  name            = "test-service-with-tags"
+  task_definition = "test-taskdef"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
+
+  tags = {
+    "name1" = "value1"
+    "name2" = "value2"
+  }
 }

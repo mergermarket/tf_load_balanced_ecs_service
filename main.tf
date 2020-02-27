@@ -8,6 +8,7 @@ resource "aws_ecs_service" "service" {
   iam_role                           = "${aws_iam_role.role.arn}"
   deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
   deployment_maximum_percent         = "${var.deployment_maximum_percent}"
+  tags                               = "${var.tags}"
 
   load_balancer {
     target_group_arn = "${var.target_group_arn}"
@@ -39,6 +40,7 @@ resource "aws_ecs_service" "service_no_loadbalancer" {
   desired_count                      = "${var.desired_count}"
   deployment_minimum_healthy_percent = "${var.deployment_minimum_healthy_percent}"
   deployment_maximum_percent         = "${var.deployment_maximum_percent}"
+  tags                               = "${var.tags}"
 
   ordered_placement_strategy {
     type  = "spread"
