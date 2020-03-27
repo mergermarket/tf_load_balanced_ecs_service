@@ -36,6 +36,7 @@ class TestCreateTaskdef(unittest.TestCase):
       deployment_minimum_healthy_percent:        "100"
       desired_count:                             "3"
       enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
       iam_role:                                  "${aws_iam_role.role.arn}"
       launch_type:                               <computed>
       load_balancer.#:                           "1"
@@ -149,6 +150,7 @@ class TestCreateTaskdef(unittest.TestCase):
       deployment_minimum_healthy_percent:        "100"
       desired_count:                             "3"
       enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
       iam_role:                                  "${aws_iam_role.role.arn}"
       launch_type:                               <computed>
       load_balancer.#:                           "1"
@@ -305,6 +307,7 @@ class TestCreateTaskdef(unittest.TestCase):
       deployment_minimum_healthy_percent:        "100"
       desired_count:                             "3"
       enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
       iam_role:                                  "${aws_iam_role.role.arn}"
       launch_type:                               <computed>
       load_balancer.#:                           "1"
@@ -329,4 +332,45 @@ class TestCreateTaskdef(unittest.TestCase):
 
         assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
         assert expected_role_policy_plan.replace(" ", "") in output.replace(" ", "")
-        assert expected_aws_ecs_service_plan.replace(" ", "") in output.replace(" ", "")        
+        assert expected_aws_ecs_service_plan.replace(" ", "") in output.replace(" ", "")
+
+    def test_create_ecs_service_with_grace_period(self):
+        output = check_output([
+            'terraform',
+            'plan',
+            '-no-color',
+            '-target=module.service_with_grace_period',
+            'test/infra'
+        ]).decode('utf-8')
+
+        print(output)
+
+        expected_service = dedent("""
++ module.service_with_grace_period.aws_ecs_service.service
+      id:                                        <computed>
+      cluster:                                   "default"
+      deployment_maximum_percent:                "200"
+      deployment_minimum_healthy_percent:        "100"
+      desired_count:                             "3"
+      enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "15"
+      iam_role:                                  "${aws_iam_role.role.arn}"
+      launch_type:                               <computed>
+      load_balancer.#:                           "1"
+      load_balancer.2878138410.container_name:   "app"
+      load_balancer.2878138410.container_port:   "8000"
+      load_balancer.2878138410.elb_name:         ""
+      load_balancer.2878138410.target_group_arn: "arn:aws-partition:service:eu-west-1:aws:resource"
+      name:                                      "test-service"
+      ordered_placement_strategy.#:              "2"
+      ordered_placement_strategy.0.field:        "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:         "spread"
+      ordered_placement_strategy.1.field:        "instanceId"
+      ordered_placement_strategy.1.type:         "spread"
+      placement_strategy.#:                      <computed>
+      platform_version:                          <computed>
+      scheduling_strategy:                       "REPLICA"
+      task_definition:                           "test-taskdef"
+""")
+
+        assert expected_service.replace(" ", "") in output.replace(" ", "")

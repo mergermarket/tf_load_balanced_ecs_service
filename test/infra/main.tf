@@ -87,3 +87,12 @@ module "service_with_tags" {
     "name2" = "value2"
   }
 }
+
+module "service_with_grace_period" {
+  source = "../.."
+
+  name            = "test-service"
+  task_definition = "test-taskdef"
+  target_group_arn = "arn:aws-partition:service:eu-west-1:aws:resource"
+  health_check_grace_period_seconds = "15"
+}
