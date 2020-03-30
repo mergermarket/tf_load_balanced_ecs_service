@@ -32,6 +32,7 @@ This module creates an ECS service with resources neccessary to plug into an App
 * `health_check_unhealthy_threshold` - (default "2") The number of consecutive health check failures required before considering the target unhealthy.
 * `health_check_matcher` - (default "200-299") The HTTP codes to use when checking for a successful response from a target. You can specify multiple values (for example, "200,202") or a range of values (for example, "200-299").
 * `tags` - (default empty map) Map of tags for the ecs_service.
+* `health_check_grace_period_seconds` - Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 2147483647. Default 0.
 
 ### Outputs
 
