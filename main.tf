@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "service" {
-  count = "${length(var.target_group_arn)}"
+  count = "${length(var.target_group_arns)}"
 
   name                               = "${var.name}"
   cluster                            = "${var.cluster}"
@@ -12,7 +12,7 @@ resource "aws_ecs_service" "service" {
   health_check_grace_period_seconds  = "${var.health_check_grace_period_seconds}"
 
   load_balancer {
-    target_group_arn = "${element(var.target_group_arn, 0)}"
+    target_group_arns = "${element(var.target_group_arns, 0)}"
     container_name   = "${var.container_name}"
     container_port   = "${var.container_port}"
   }
@@ -33,7 +33,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_ecs_service" "service" {
-  count = "${length(var.target_group_arn) == 2 ? 1 : 0}"
+  count = "${length(var.target_group_arns) == 2 ? 1 : 0}"
 
   name                               = "${var.name}"
   cluster                            = "${var.cluster}"
@@ -46,7 +46,7 @@ resource "aws_ecs_service" "service" {
   health_check_grace_period_seconds  = "${var.health_check_grace_period_seconds}"
 
   load_balancer {
-    target_group_arn = "${element(var.target_group_arn, 0)}"
+    target_group_arns = "${element(var.target_group_arns, 0)}"
     container_name   = "${var.container_name}"
     container_port   = "${var.container_port}"
   }

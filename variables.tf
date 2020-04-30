@@ -10,7 +10,7 @@ variable "task_definition" {
   type        = "string"
 }
 
-variable "target_group_arn" {
+variable "target_group_arns" {
   description = "The target group ARN"
   type        = "list"
   default     = []
