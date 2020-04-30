@@ -16,6 +16,12 @@ variable "target_group_arn" {
   default     = ""
 }
 
+variable "target_group_arn2" {
+  description = "The target group ARN"
+  type        = "string"
+  default     = ""
+}
+
 variable "cluster" {
   description = "The name of the ECS cluster to deploy the service to."
   type        = "string"
@@ -94,13 +100,12 @@ variable "deployment_maximum_percent" {
 
 variable "tags" {
   description = "Tags added to the ecs service resource"
-  type = "map"
-  default = {
-  }
+  type        = "map"
+  default     = {}
 }
 
 variable "health_check_grace_period_seconds" {
   description = "Seconds to ignore failing load balancer health checks on newly instantiated tasks to prevent premature shutdown, up to 2147483647. Default 0."
-  type = "string"
-  default = "0"
+  type        = "string"
+  default     = "0"
 }
