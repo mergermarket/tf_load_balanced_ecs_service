@@ -12,14 +12,8 @@ variable "task_definition" {
 
 variable "target_group_arn" {
   description = "The target group ARN"
-  type        = "string"
-  default     = ""
-}
-
-variable "target_group_arn2" {
-  description = "The target group ARN"
-  type        = "string"
-  default     = ""
+  type        = "list"
+  default     = []
 }
 
 variable "cluster" {
