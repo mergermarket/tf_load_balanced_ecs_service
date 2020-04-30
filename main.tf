@@ -73,7 +73,7 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_ecs_service" "service_no_loadbalancer" {
-  count = "${length(var.target_group_arn)}"
+  count = "${length(var.target_group_arns)}"
 
   name                               = "${var.name}"
   cluster                            = "${var.cluster}"
