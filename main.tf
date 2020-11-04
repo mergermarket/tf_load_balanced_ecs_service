@@ -23,10 +23,14 @@ resource "aws_ecs_service" "service" {
   }
 
   ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
+    type  = "binpack"
+    field = "cpu"
   }
   
+  placement_constraints {
+    type = "distinctInstance"
+  }
+
   lifecycle {
     create_before_destroy = true
   }
