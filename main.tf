@@ -65,7 +65,7 @@ resource "aws_ecs_service" "service_no_loadbalancer" {
 
   placement_constraints {
     type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : "memberOf"}"
-    expression = "${lower(var.distinct_task_placement) == "true" ? "" : "agentConnected == TRUE"}"
+    expression = "${lower(var.distinct_task_placement) == "true" ? "" : "registeredAt > 2000-01-01"}"
   }
   
 }
