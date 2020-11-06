@@ -23,13 +23,9 @@ resource "aws_ecs_service" "service" {
   }
 
   ordered_placement_strategy {
-    type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
-    field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
+    type  = "spread"
+    field = "instanceId"
   }
-  
-  # placement_constraints {
-  #   type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : ""}" 
-  # }
 
   lifecycle {
     create_before_destroy = true
