@@ -23,12 +23,12 @@ resource "aws_ecs_service" "service" {
   }
 
   ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
+    type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
+    field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
   }
   
   placement_constraints {
-    type = "distinctInstance"
+    type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : "null"}" 
   }
 
   lifecycle {
