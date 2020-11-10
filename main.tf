@@ -21,20 +21,16 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
-
-  # ordered_placement_strategy {
-  #   type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
-  #   field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
-  # }
-
+  
   ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
+    type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
+    field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
   }
 
-  # placement_constraints {
-  #   type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : ""}" 
-  # }
+  placement_constraints {
+    type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : "memberOf"}"
+    expression = "${lower(var.distinct_task_placement) == "true" ? "" : "agentConnected == true"}"
+  }
 
   lifecycle {
     create_before_destroy = true
