@@ -105,8 +105,8 @@ variable "health_check_grace_period_seconds" {
   default = "0"
 }
 
-variable "distinct_task_placement" {
-  description = "Enable distinct instance and binpacking. Enter 'true' for clusters with auto scaling groups. Enter 'false' for clusters with no ASG and instant counts less than or equal to desired tasks"
+variable "pack_and_distinct" {
+  description = "Enable distinct instance and task binpacking for better cluster utilisation. Enter 'true' for clusters with auto scaling groups. Enter 'false' for clusters with no ASG and instant counts less than or equal to desired tasks"
   type = "string"
   default = "false"
 }

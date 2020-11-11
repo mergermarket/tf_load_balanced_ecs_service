@@ -23,13 +23,13 @@ resource "aws_ecs_service" "service" {
   }
   
   ordered_placement_strategy {
-    type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
-    field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
+    type  = "${lower(var.pack_and_distinct) == "true" ? "binpack" : "spread"}"
+    field = "${lower(var.pack_and_distinct) == "true" ? "cpu" : "instanceId"}"
   }
 
   placement_constraints {
-    type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : "memberOf"}"
-    expression = "${lower(var.distinct_task_placement) == "true" ? "" : "agentConnected == true"}"
+    type = "${lower(var.pack_and_distinct) == "true" ? "distinctInstance" : "memberOf"}"
+    expression = "${lower(var.pack_and_distinct) == "true" ? "" : "agentConnected == true"}"
   }
 
   lifecycle {
@@ -55,13 +55,13 @@ resource "aws_ecs_service" "service_no_loadbalancer" {
   }
   
   ordered_placement_strategy {
-    type  = "${lower(var.distinct_task_placement) == "true" ? "binpack" : "spread"}"
-    field = "${lower(var.distinct_task_placement) == "true" ? "cpu" : "instanceId"}"
+    type  = "${lower(var.pack_and_distinct) == "true" ? "binpack" : "spread"}"
+    field = "${lower(var.pack_and_distinct) == "true" ? "cpu" : "instanceId"}"
   }
 
   placement_constraints {
-    type = "${lower(var.distinct_task_placement) == "true" ? "distinctInstance" : "memberOf"}"
-    expression = "${lower(var.distinct_task_placement) == "true" ? "" : "agentConnected == true"}"
+    type = "${lower(var.pack_and_distinct) == "true" ? "distinctInstance" : "memberOf"}"
+    expression = "${lower(var.pack_and_distinct) == "true" ? "" : "agentConnected == true"}"
   }
   
 }
