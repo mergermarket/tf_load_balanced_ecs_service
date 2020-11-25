@@ -21,17 +21,12 @@ resource "aws_ecs_service" "service" {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
-  
+
   ordered_placement_strategy {
-    type  = "${lower(var.pack_and_distinct) == "true" ? "binpack" : "spread"}"
-    field = "${lower(var.pack_and_distinct) == "true" ? "cpu" : "instanceId"}"
+    type  = "spread"
+    field = "instanceId"
   }
-
-  placement_constraints {
-    type = "${lower(var.pack_and_distinct) == "true" ? "distinctInstance" : "memberOf"}"
-    expression = "${lower(var.pack_and_distinct) == "true" ? "" : "agentConnected == true"}"
-  }
-
+  
   lifecycle {
     create_before_destroy = true
   }
@@ -53,15 +48,9 @@ resource "aws_ecs_service" "service_no_loadbalancer" {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
   }
-  
-  ordered_placement_strategy {
-    type  = "${lower(var.pack_and_distinct) == "true" ? "binpack" : "spread"}"
-    field = "${lower(var.pack_and_distinct) == "true" ? "cpu" : "instanceId"}"
-  }
 
-  placement_constraints {
-    type = "${lower(var.pack_and_distinct) == "true" ? "distinctInstance" : "memberOf"}"
-    expression = "${lower(var.pack_and_distinct) == "true" ? "" : "agentConnected == true"}"
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
   }
-  
 }
