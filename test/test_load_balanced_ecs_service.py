@@ -30,33 +30,30 @@ class TestCreateTaskdef(unittest.TestCase):
 
         expected_service = dedent("""
 + module.service.aws_ecs_service.service
-      id:                                          <computed>
-      cluster:                                     "default"
-      deployment_maximum_percent:                  "200"
-      deployment_minimum_healthy_percent:          "100"
-      desired_count:                               "3"
-      enable_ecs_managed_tags:                     "false"
-      health_check_grace_period_seconds:           "0"
-      iam_role:                                    "${aws_iam_role.role.arn}"
-      launch_type:                                 <computed>
-      load_balancer.#:                             "1"
-      load_balancer.2878138410.container_name:     "app"
-      load_balancer.2878138410.container_port:     "8000"
-      load_balancer.2878138410.elb_name:           ""
-      load_balancer.2878138410.target_group_arn:   "arn:aws-partition:service:eu-west-1:aws:resource"
-      name:                                        "test-service"
-      ordered_placement_strategy.#:                "2"
-      ordered_placement_strategy.0.field:          "attribute:ecs.availability-zone"
-      ordered_placement_strategy.0.type:           "spread"
-      ordered_placement_strategy.1.field:          "instanceId"
-      ordered_placement_strategy.1.type:           "spread"
-      placement_constraints.#:                     "1"
-      placement_constraints.4028779950.expression: "agentConnected == true"
-      placement_constraints.4028779950.type:       "memberOf"
-      placement_strategy.#:                        <computed>
-      platform_version:                            <computed>
-      scheduling_strategy:                         "REPLICA"
-      task_definition:                             "test-taskdef"
+      id:                                        <computed>
+      cluster:                                   "default"
+      deployment_maximum_percent:                "200"
+      deployment_minimum_healthy_percent:        "100"
+      desired_count:                             "3"
+      enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
+      iam_role:                                  "${aws_iam_role.role.arn}"
+      launch_type:                               <computed>
+      load_balancer.#:                           "1"
+      load_balancer.2878138410.container_name:   "app"
+      load_balancer.2878138410.container_port:   "8000"
+      load_balancer.2878138410.elb_name:         ""
+      load_balancer.2878138410.target_group_arn: "arn:aws-partition:service:eu-west-1:aws:resource"
+      name:                                      "test-service"
+      ordered_placement_strategy.#:              "2"
+      ordered_placement_strategy.0.field:        "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:         "spread"
+      ordered_placement_strategy.1.field:        "instanceId"
+      ordered_placement_strategy.1.type:         "spread"
+      placement_strategy.#:                      <computed>
+      platform_version:                          <computed>
+      scheduling_strategy:                       "REPLICA"
+      task_definition:                           "test-taskdef"
 """)
 
         assert expected_service.replace(" ", "") in output.replace(" ", "")
@@ -147,33 +144,30 @@ class TestCreateTaskdef(unittest.TestCase):
         """).strip()
         expected_aws_ecs_service_plan = dedent("""
 + module.service_with_long_name.aws_ecs_service.service
-      id:                                          <computed>
-      cluster:                                     "default"
-      deployment_maximum_percent:                  "200"
-      deployment_minimum_healthy_percent:          "100"
-      desired_count:                               "3"
-      enable_ecs_managed_tags:                     "false"
-      health_check_grace_period_seconds:           "0"
-      iam_role:                                    "${aws_iam_role.role.arn}"
-      launch_type:                                 <computed>
-      load_balancer.#:                             "1"
-      load_balancer.2878138410.container_name:     "app"
-      load_balancer.2878138410.container_port:     "8000"
-      load_balancer.2878138410.elb_name:           ""
-      load_balancer.2878138410.target_group_arn:   "arn:aws-partition:service:eu-west-1:aws:resource"
-      name:                                        "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
-      ordered_placement_strategy.#:                "2"
-      ordered_placement_strategy.0.field:          "attribute:ecs.availability-zone"
-      ordered_placement_strategy.0.type:           "spread"
-      ordered_placement_strategy.1.field:          "instanceId"
-      ordered_placement_strategy.1.type:           "spread"
-      placement_constraints.#:                     "1"
-      placement_constraints.4028779950.expression: "agentConnected == true"
-      placement_constraints.4028779950.type:       "memberOf"
-      placement_strategy.#:                        <computed>
-      platform_version:                            <computed>
-      scheduling_strategy:                         "REPLICA"
-      task_definition:                             "test-taskdef"
+      id:                                        <computed>
+      cluster:                                   "default"
+      deployment_maximum_percent:                "200"
+      deployment_minimum_healthy_percent:        "100"
+      desired_count:                             "3"
+      enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
+      iam_role:                                  "${aws_iam_role.role.arn}"
+      launch_type:                               <computed>
+      load_balancer.#:                           "1"
+      load_balancer.2878138410.container_name:   "app"
+      load_balancer.2878138410.container_port:   "8000"
+      load_balancer.2878138410.elb_name:         ""
+      load_balancer.2878138410.target_group_arn: "arn:aws-partition:service:eu-west-1:aws:resource"
+      name:                                      "test-service-humptydumptysatonawallhumptydumptyhadagreatfall"
+      ordered_placement_strategy.#:              "2"
+      ordered_placement_strategy.0.field:        "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:         "spread"
+      ordered_placement_strategy.1.field:        "instanceId"
+      ordered_placement_strategy.1.type:         "spread"
+      placement_strategy.#:                      <computed>
+      platform_version:                          <computed>
+      scheduling_strategy:                       "REPLICA"
+      task_definition:                           "test-taskdef"
 """).strip() # noqa
 
         assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
@@ -307,36 +301,33 @@ class TestCreateTaskdef(unittest.TestCase):
 
         expected_aws_ecs_service_plan = dedent("""
 + module.service_with_tags.aws_ecs_service.service
-      id:                                          <computed>
-      cluster:                                     "default"
-      deployment_maximum_percent:                  "200"
-      deployment_minimum_healthy_percent:          "100"
-      desired_count:                               "3"
-      enable_ecs_managed_tags:                     "false"
-      health_check_grace_period_seconds:           "0"
-      iam_role:                                    "${aws_iam_role.role.arn}"
-      launch_type:                                 <computed>
-      load_balancer.#:                             "1"
-      load_balancer.2878138410.container_name:     "app"
-      load_balancer.2878138410.container_port:     "8000"
-      load_balancer.2878138410.elb_name:           ""
-      load_balancer.2878138410.target_group_arn:   "arn:aws-partition:service:eu-west-1:aws:resource"
-      name:                                        "test-service-with-tags"
-      ordered_placement_strategy.#:                "2"
-      ordered_placement_strategy.0.field:          "attribute:ecs.availability-zone"
-      ordered_placement_strategy.0.type:           "spread"
-      ordered_placement_strategy.1.field:          "instanceId"
-      ordered_placement_strategy.1.type:           "spread"
-      placement_constraints.#:                     "1"
-      placement_constraints.4028779950.expression: "agentConnected == true"
-      placement_constraints.4028779950.type:       "memberOf"
-      placement_strategy.#:                        <computed>
-      platform_version:                            <computed>
-      scheduling_strategy:                         "REPLICA"
-      tags.%:                                      "2"
-      tags.name1:                                  "value1"
-      tags.name2:                                  "value2"
-      task_definition:                             "test-taskdef"
+      id:                                        <computed>
+      cluster:                                   "default"
+      deployment_maximum_percent:                "200"
+      deployment_minimum_healthy_percent:        "100"
+      desired_count:                             "3"
+      enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "0"
+      iam_role:                                  "${aws_iam_role.role.arn}"
+      launch_type:                               <computed>
+      load_balancer.#:                           "1"
+      load_balancer.2878138410.container_name:   "app"
+      load_balancer.2878138410.container_port:   "8000"
+      load_balancer.2878138410.elb_name:         ""
+      load_balancer.2878138410.target_group_arn: "arn:aws-partition:service:eu-west-1:aws:resource"
+      name:                                      "test-service-with-tags"
+      ordered_placement_strategy.#:              "2"
+      ordered_placement_strategy.0.field:        "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:         "spread"
+      ordered_placement_strategy.1.field:        "instanceId"
+      ordered_placement_strategy.1.type:         "spread"
+      placement_strategy.#:                      <computed>
+      platform_version:                          <computed>
+      scheduling_strategy:                       "REPLICA"
+      tags.%:                                    "2"
+      tags.name1:                                "value1"
+      tags.name2:                                "value2"
+      task_definition:                           "test-taskdef"
 """).strip() # noqa
 
         assert expected_role_plan.replace(" ", "") in output.replace(" ", "")
@@ -352,36 +343,34 @@ class TestCreateTaskdef(unittest.TestCase):
             'test/infra'
         ]).decode('utf-8')
 
+        print(output)
+
         expected_service = dedent("""
 + module.service_with_grace_period.aws_ecs_service.service
-      id:                                          <computed>
-      cluster:                                     "default"
-      deployment_maximum_percent:                  "200"
-      deployment_minimum_healthy_percent:          "100"
-      desired_count:                               "3"
-      enable_ecs_managed_tags:                     "false"
-      health_check_grace_period_seconds:           "15"
-      iam_role:                                    "${aws_iam_role.role.arn}"
-      launch_type:                                 <computed>
-      load_balancer.#:                             "1"
-      load_balancer.2878138410.container_name:     "app"
-      load_balancer.2878138410.container_port:     "8000"
-      load_balancer.2878138410.elb_name:           ""
-      load_balancer.2878138410.target_group_arn:   "arn:aws-partition:service:eu-west-1:aws:resource"
-      name:                                        "test-service"
-      ordered_placement_strategy.#:                "2"
-      ordered_placement_strategy.0.field:          "attribute:ecs.availability-zone"
-      ordered_placement_strategy.0.type:           "spread"
-      ordered_placement_strategy.1.field:          "instanceId"
-      ordered_placement_strategy.1.type:           "spread"
-      placement_constraints.#:                     "1"
-      placement_constraints.4028779950.expression: "agentConnected == true"
-      placement_constraints.4028779950.type:       "memberOf"
-      placement_strategy.#:                        <computed>
-      platform_version:                            <computed>
-      scheduling_strategy:                         "REPLICA"
-      task_definition:                             "test-taskdef"
+      id:                                        <computed>
+      cluster:                                   "default"
+      deployment_maximum_percent:                "200"
+      deployment_minimum_healthy_percent:        "100"
+      desired_count:                             "3"
+      enable_ecs_managed_tags:                   "false"
+      health_check_grace_period_seconds:         "15"
+      iam_role:                                  "${aws_iam_role.role.arn}"
+      launch_type:                               <computed>
+      load_balancer.#:                           "1"
+      load_balancer.2878138410.container_name:   "app"
+      load_balancer.2878138410.container_port:   "8000"
+      load_balancer.2878138410.elb_name:         ""
+      load_balancer.2878138410.target_group_arn: "arn:aws-partition:service:eu-west-1:aws:resource"
+      name:                                      "test-service"
+      ordered_placement_strategy.#:              "2"
+      ordered_placement_strategy.0.field:        "attribute:ecs.availability-zone"
+      ordered_placement_strategy.0.type:         "spread"
+      ordered_placement_strategy.1.field:        "instanceId"
+      ordered_placement_strategy.1.type:         "spread"
+      placement_strategy.#:                      <computed>
+      platform_version:                          <computed>
+      scheduling_strategy:                       "REPLICA"
+      task_definition:                           "test-taskdef"
 """)
 
         assert expected_service.replace(" ", "") in output.replace(" ", "")
-        
