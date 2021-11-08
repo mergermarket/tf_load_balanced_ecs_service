@@ -1,6 +1,6 @@
 # tf\_load\_balanced\_ecs\_service
 
-[![Build Status](https://travis-ci.org/mergermarket/tf_load_balanced_ecs_service.svg?branch=master)](https://travis-ci.org/mergermarket/tf_load_balanced_ecs_service)
+[![Test](https://github.com/mergermarket/tf_load_balanced_ecs_service/actions/workflows/test.yml/badge.svg)](https://github.com/mergermarket/tf_load_balanced_ecs_service/actions/workflows/test.yml)
 
 This module creates an ECS service with resources neccessary to plug into an Application Load Balancer (service role & policy and target group).
 
