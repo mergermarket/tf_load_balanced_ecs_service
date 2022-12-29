@@ -1,3 +1,13 @@
+provider "aws" {
+  default_tags {
+    tags = {
+      "component" = "${var.component}"
+      "env"       = "${var.env}"
+      "team"      = "${var.team}"
+    }
+  }
+}
+
 resource "aws_ecs_service" "service" {
   count = "${var.target_group_arn != "" ? 1 : 0}"
 

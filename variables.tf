@@ -104,3 +104,18 @@ variable "health_check_grace_period_seconds" {
   type = "string"
   default = "0"
 }
+
+variable "team" {
+  type = "string"
+  default = ""
+}
+
+variable "component" {
+  type = "string"
+  default = ""
+}
+
+variable "env" {
+  type = "string"
+  default = ""
+}
