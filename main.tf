@@ -1,3 +1,9 @@
+resource "null_resource" "always_run" {
+  triggers = {
+    timestamp = "${timestamp()}"
+  }
+}
+
 resource "aws_ecs_service" "service" {
   count = "${var.target_group_arn != "" ? 1 : 0}"
 
@@ -30,6 +36,9 @@ resource "aws_ecs_service" "service" {
   
   lifecycle {
     create_before_destroy = true
+    replace_triggered_by = [
+      null_resource.always_run
+    ]    
     ignore_changes = [
       "capacity_provider_strategy",
       "ordered_placement_strategy",
