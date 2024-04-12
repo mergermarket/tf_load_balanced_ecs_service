@@ -10,6 +10,7 @@ resource "aws_ecs_service" "service" {
   deployment_maximum_percent         = "${var.deployment_maximum_percent}"
   tags                               = "${var.tags}"
   health_check_grace_period_seconds  = "${var.health_check_grace_period_seconds}"
+  force_new_deployment = true
 
   load_balancer {
     target_group_arn = "${var.target_group_arn}"
