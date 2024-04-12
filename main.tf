@@ -30,7 +30,6 @@ resource "aws_ecs_service" "service" {
   lifecycle {
     create_before_destroy = true
     ignore_changes = [
-      "launch_type",
       "capacity_provider_strategy",
       "ordered_placement_strategy",
     ]
